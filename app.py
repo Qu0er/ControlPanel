@@ -4,10 +4,11 @@ app = Flask(__name__)
 
 
 products = [
-    {"id": 1, "name": "АЛЛЮР 189-4", "description": "АЛЛЮР 189-4 лат. крест.ключ Замок врезной б/руч (30)", "price": 568, "count": 20},
-    {"id": 2, "name": "АЛЛЮР 189-4A CP", "description": "Замок врезной б/руч (30) ", "price": 853, "count": 15},
-    {"id": 3, "name": "АЛЛЮР 6040 PB", "description": "без ц/мех Замок врезной б/руч (30) ", "price": 380, "count": 15},
+    {"id": 1090, "name": "АЛЛЮР 189-4", "description": "АЛЛЮР 189-4 лат. крест.ключ Замок врезной б/руч (30)", "price": 568, "count": 20},
+    {"id": 1091, "name": "АЛЛЮР 189-4A CP", "description": "Замок врезной б/руч (30) ", "price": 853, "count": 15},
+    {"id": 1215, "name": "АЛЛЮР 6040 PB", "description": "без ц/мех Замок врезной б/руч (30) ", "price": 380, "count": 15},
 ]
+
 
 @app.route("/")
 def index():
@@ -54,5 +55,5 @@ def buy_products():
 
 
 if __name__ == "__main__":
-    app.run(debug=True, host="192.168.3.25", port=8080)
+    app.run(debug=True, host="127.0.0.1", port=8080)
 
