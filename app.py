@@ -4,13 +4,18 @@ app = Flask(__name__)
 
 
 products = [
-    {"id": 1, "name": "Товар 1", "description": "Описание товара 1", "price": 100, "count": 20},
-    {"id": 2, "name": "Товар 2", "description": "Описание товара 2", "price": 200, "count": 15},
+    {"id": 1, "name": "АЛЛЮР 189-4", "description": "АЛЛЮР 189-4 лат. крест.ключ Замок врезной б/руч (30)", "price": 568, "count": 20},
+    {"id": 2, "name": "АЛЛЮР 189-4A CP", "description": "Замок врезной б/руч (30) ", "price": 853, "count": 15},
+    {"id": 3, "name": "АЛЛЮР 6040 PB", "description": "без ц/мех Замок врезной б/руч (30) ", "price": 380, "count": 15},
 ]
 
 @app.route("/")
 def index():
     return render_template("index.html")
+
+@app.route("/get_products")
+def get_products():
+    return jsonify(products)
 
 @app.route('/get_product/<int:product_id>')
 def get_product(product_id):
@@ -49,5 +54,5 @@ def buy_products():
 
 
 if __name__ == "__main__":
-    app.run(debug=True, host="192.168.3.25")
+    app.run(debug=True, host="192.168.3.25", port=8080)
 
