@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Каталог товаров</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script defer src="{{ url_for('static', filename='script.js') }}"></script>
+    
+</head>
+<body>
+
+    <nav class="menu">
+        <button onclick="openPopup()">Шаблон</button>
+        <button>Каталог</button>
+        <button>Остатки</button>
+        <button>Профиль</button>
+    </nav>
+
+
+    <div id="popup" class="popup">
+        <div class="popup-content">
+            <h2>Товары</h2>
+            <div id="popup-items"></div>
+            <button class="buy-btn" onclick="buyProducts()">Оформить заказ</button>
+            <button class="close-btn" onclick="closePopup()">Закрыть</button>
+            
+        </div>
+    </div>
+
+</body>
+</html>
+

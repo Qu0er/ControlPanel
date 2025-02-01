@@ -1,0 +1,89 @@
+let productsToBuy = [];
+
+function openPopup() {
+    fetch('/get_products')
+        .then(response => response.json())
+        .then(data => {
+            let popupItems = document.getElementById("popup-items");
+            popupItems.innerHTML = "";
+
+            if (data.length === 0) {
+                popupItems.innerHTML = "<p>Нет товаров</p>";
+            } else {
+                data.forEach(product => {
+                    let item = document.createElement("div");
+                    item.classList.add("product-item");
+                    item.setAttribute("data-id", product.id); 
+                    item.innerHTML = `
+                        <strong>${product.name}</strong><br><br>
+                        <span class="product-count">${product.count} шт</span>, ${product.price} ₽
+                        <button class="increase-btn" onclick="changeQuantity(${product.id}, 10)">+10 шт</button>
+                        <button class="decrease-btn" onclick="changeQuantity(${product.id}, -10)">-10 шт</button>
+                    `;
+                    popupItems.appendChild(item);
+
+                    if (!productsToBuy.some(p => p.id === product.id)) {
+                        productsToBuy.push({ id: product.id, quantity: product.count });
+                    }
+                });
+            }
+
+            document.getElementById("popup").classList.add("open");
+        })
+        .catch(error => console.error("Ошибка загрузки товаров:", error));
+}
+
+function closePopup() {
+    document.getElementById("popup").classList.remove("open");
+}
+
+function changeQuantity(productId, quantityChange) {
+    let product = productsToBuy.find(p => p.id === productId);
+    if (product) {
+        product.quantity += quantityChange;
+
+        let productElement = document.querySelector(`.product-item[data-id="${productId}"]`);
+        if (productElement) {
+            let countElement = productElement.querySelector(".product-count");
+            if (countElement) {
+                countElement.innerText = `${product.quantity} шт`;
+            }
+        }
+    }
+}
+
+function buyProducts() {
+    let validProducts = productsToBuy.filter(product => product.quantity > 0); 
+    if (validProducts.length === 0) {
+        alert("Вы не выбрали товары для покупки.");
+        return;
+    }
+
+    const formattedProducts = validProducts.map(product => ({
+        id: product.id,
+        quantity: product.quantity
+    }));
+
+    fetch('/buy_products', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ products: formattedProducts }) 
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert("Товары успешно куплены!");
+            productsToBuy = []; 
+            closePopup();
+        } else {
+            alert("Ошибка при покупке товаров.");
+        }
+    })
+    .catch(error => {
+        console.error("Ошибка при покупке товаров:", error);
+    });
+}
+
+
