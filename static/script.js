@@ -15,7 +15,8 @@ function openPopup() {
                     item.classList.add("product-item");
                     item.setAttribute("data-id", product.id);
                     item.innerHTML = `
-                        <strong>${product.name}</strong><br><br>
+                        <strong>${product.name}</strong><br>
+                        <strong>Артикул - ${product.id}</strong><br><br>
                         <span class="product-count">${product.count} шт</span>, ${product.price} ₽
                         <button class="increase-btn" onclick="changeQuantity(${product.id}, 10)">+10 шт</button>
                         <button class="decrease-btn" onclick="changeQuantity(${product.id}, -10)">-10 шт</button>
@@ -52,6 +53,7 @@ function openProductDetails(productId) {
             console.log("Данные о товаре:", product); 
 
             document.getElementById("product-title").innerText = product.name;
+            document.getElementById("product-art").innerText = "Артикул: " + product.id;
             document.getElementById("product-description").innerText = product.description || "Нет описания";
             document.getElementById("product-price").innerText = product.price;
 
