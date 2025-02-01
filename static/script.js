@@ -13,13 +13,14 @@ function openPopup() {
                 data.forEach(product => {
                     let item = document.createElement("div");
                     item.classList.add("product-item");
-                    item.setAttribute("data-id", product.id); 
+                    item.setAttribute("data-id", product.id);
                     item.innerHTML = `
                         <strong>${product.name}</strong><br><br>
                         <span class="product-count">${product.count} шт</span>, ${product.price} ₽
                         <button class="increase-btn" onclick="changeQuantity(${product.id}, 10)">+10 шт</button>
                         <button class="decrease-btn" onclick="changeQuantity(${product.id}, -10)">-10 шт</button>
                     `;
+                    item.onclick = () => openProductDetails(product.id); // Добавляем клик по товару
                     popupItems.appendChild(item);
 
                     if (!productsToBuy.some(p => p.id === product.id)) {
@@ -33,8 +34,20 @@ function openPopup() {
         .catch(error => console.error("Ошибка загрузки товаров:", error));
 }
 
-function closePopup() {
-    document.getElementById("popup").classList.remove("open");
+function openProductDetails(productId) {
+    fetch(`/get_product/${productId}`)
+        .then(response => response.json())
+        .then(product => {
+            document.getElementById("product-title").innerText = product.name;
+            document.getElementById("product-description").innerText = product.description || "Нет описания";
+            document.getElementById("product-price").innerText = product.price;
+            document.getElementById("product-popup").classList.add("open");
+        })
+        .catch(error => console.error("Ошибка загрузки информации о товаре:", error));
+}
+
+function closeProductDetails() {
+    document.getElementById("product-popup").classList.remove("open");
 }
 
 function changeQuantity(productId, quantityChange) {

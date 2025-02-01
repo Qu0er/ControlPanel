@@ -4,19 +4,20 @@ app = Flask(__name__)
 
 
 products = [
-    {"id": 1, "name": "Замок богатырь", "count": 5, "price": 1200},
-    {"id": 2, "name": "Замок стальной", "count": 8, "price": 950},
-    {"id": 3, "name": "Цепь антивандальная", "count": 3, "price": 1800},
-    {"id": 4, "name": "Замок богатырь", "count": 5, "price": 1200},
+    {"id": 1, "name": "Товар 1", "description": "Описание товара 1", "price": 100, "count": 20},
+    {"id": 2, "name": "Товар 2", "description": "Описание товара 2", "price": 200, "count": 15},
 ]
 
 @app.route("/")
 def index():
     return render_template("index.html")
 
-@app.route("/get_products")
-def get_products():
-    return jsonify(products)
+@app.route('/get_product/<int:product_id>')
+def get_product(product_id):
+    product = next((p for p in products if p["id"] == product_id), None)
+    if product:
+        return jsonify(product)
+    return jsonify({"error": "Товар не найден"}), 404
 
 @app.route('/buy_products', methods=['POST'])
 def buy_products():
